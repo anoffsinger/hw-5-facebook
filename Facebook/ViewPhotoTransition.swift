@@ -9,19 +9,42 @@
 import UIKit
 
 class ViewPhotoTransition: BaseTransition {
-    
-    let tabViewController = fromViewController as! UITabBarController
-    let navigationController = tabViewController.selectedViewController as! UINavigationController
-    let feedViewController = navigationController.topViewController as! FeedViewController
-    let toViewController = toViewController as! PhotoViewController
-    
-    let newsFeedViewController = fromViewController as! NewsFeedViewController
-    
     let window = UIApplication.shared.keyWindow
+    override func presentTransition(containerView: UIView, fromViewController: UIViewController, toViewController: UIViewController) {
+        
+        let tabViewController = fromViewController as! UITabBarController
+        let navigationController = tabViewController.selectedViewController as! UINavigationController
+        let newsFeedViewController = navigationController.topViewController as! NewsFeedViewController
+        let toViewController = toViewController as! ViewPhotoViewController
+        
+        // get our selected image view from the news feed
+        let selectedImageView = newsFeedViewController.selectedImageView
+        
+        // get position of the tapped image
+        let frame = window!.convert((selectedImageView?.frame)!, from: containerView)
+        
+        // create fake photo for transition
+        let imageView = UIImageView(frame: frame)
+        imageView.image = selectedImageView?.image
+        
+        
+        
+        // add the fake photo
+        window!.addSubview(imageView)
+        
+        
+    }
     
-    // image view here needs to be selectedImageView, containerview should be selectedImageView's parent
-    let frame = window!.convert(imageView.frame, from: containerView)
+    override func dismissTransition(containerView: UIView, fromViewController: UIViewController, toViewController: UIViewController) {
+    }
     
-    window!.addSubview(imageView)
+    
+    
+    
+    
+//
+//    // image view here needs to be selectedImageView, containerview should be selectedImageView's parent
+//
+//    window!.addSubview(imageView)
     
 }
